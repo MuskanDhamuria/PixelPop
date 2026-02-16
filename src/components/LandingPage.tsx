@@ -1,0 +1,208 @@
+import { Gamepad2 } from 'lucide-react';
+import { motion } from 'motion/react';
+import heroImage from '../assets/1000_F_568560509_duHeTWTg9fLblBc1DLHiXvszqzTIb4WI.jpg'; 
+
+interface LandingPageProps {
+  onEnter: () => void;
+}
+
+export function LandingPage({ onEnter }: LandingPageProps) {
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] flex flex-col overflow-hidden relative">
+      {/* Animated gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-transparent to-amber-500/10 animate-pulse" style={{ animationDuration: '4s' }}></div>
+      
+      {/* Header */}
+      <header className="px-6 py-6 flex items-center justify-between relative z-20">
+        <motion.div 
+          className="flex items-center gap-2"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="bg-gradient-to-br from-teal-400 to-cyan-500 p-1.5 rounded shadow-lg shadow-teal-500/50">
+            <Gamepad2 className="size-5 text-black" />
+          </div>
+          <span className="text-xl font-black bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">PixelPop</span>
+        </motion.div>
+        <motion.div 
+          className="flex items-center gap-4"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* <button className="text-teal-300/80 hover:text-teal-300 font-semibold text-sm transition-colors">
+            Log in
+          </button>
+          <button className="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-black font-bold px-5 py-2 rounded text-sm transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/50">
+            Sign up
+          </button> */}
+        </motion.div>
+      </header>
+
+      {/* Hero Section */}
+      <main className="flex-1 flex items-center justify-center px-6 py-12 relative overflow-hidden">
+        {/* Background Image */}
+        <motion.div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${heroImage})`,
+          }}
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/20 via-transparent to-[#0a0a0a]/40"></div>
+          {/* Animated teal glow overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-teal-500/10 via-transparent to-transparent animate-pulse" style={{ animationDuration: '3s' }}></div>
+        </motion.div>
+
+        {/* Floating particles effect */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(15)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 rounded-full"
+              style={{
+                background: i % 3 === 0 ? '#14b8a6' : i % 3 === 1 ? '#fbbf24' : '#5eead4',
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                filter: 'blur(1px)',
+              }}
+              animate={{
+                y: [0, -30, 0],
+                opacity: [0.2, 0.8, 0.2],
+                scale: [1, 1.5, 1],
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                delay: Math.random() * 2,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 text-center max-w-4xl">
+          <motion.h1 
+            className="text-6xl md:text-8xl font-black mb-6 leading-tight"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <motion.span 
+              className="block text-white mb-2"
+              style={{ 
+                textShadow: `
+                  3px 3px 0px rgba(0, 0, 0, 0.8),
+                  -1px -1px 0px rgba(0,0,0,0.9),
+                  1px -1px 0px rgba(0,0,0,0.9),
+                  -1px 1px 0px rgba(0,0,0,0.9),
+                  1px 1px 0px rgba(0,0,0,0.9),
+                  0 0 20px rgba(20, 184, 166, 0.3)
+                `
+              }}
+              animate={{
+                textShadow: [
+                  '3px 3px 0px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(0,0,0,0.9), 1px -1px 0px rgba(0,0,0,0.9), -1px 1px 0px rgba(0,0,0,0.9), 1px 1px 0px rgba(0,0,0,0.9), 0 0 20px rgba(20, 184, 166, 0.3)',
+                  '3px 3px 0px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(0,0,0,0.9), 1px -1px 0px rgba(0,0,0,0.9), -1px 1px 0px rgba(0,0,0,0.9), 1px 1px 0px rgba(0,0,0,0.9), 0 0 30px rgba(20, 184, 166, 0.5)',
+                  '3px 3px 0px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(0,0,0,0.9), 1px -1px 0px rgba(0,0,0,0.9), -1px 1px 0px rgba(0,0,0,0.9), 1px 1px 0px rgba(0,0,0,0.9), 0 0 20px rgba(20, 184, 166, 0.3)',
+                ]
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              Start your
+            </motion.span>
+            <motion.span 
+              className="block bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 bg-clip-text text-transparent"
+              style={{ 
+                textShadow: `
+                  4px 4px 0px rgba(0,0,0,0.9),
+                  -2px -2px 0px rgba(0,0,0,0.5),
+                  2px -2px 0px rgba(0,0,0,0.5),
+                  -2px 2px 0px rgba(0,0,0,0.5),
+                  2px 2px 0px rgba(0,0,0,0.5)
+                `,
+                filter: 'drop-shadow(0 0 30px rgba(251, 191, 36, 0.5))'
+              }}
+              animate={{
+                filter: [
+                  'drop-shadow(0 0 30px rgba(251, 191, 36, 0.5))',
+                  'drop-shadow(0 0 40px rgba(251, 191, 36, 0.7))',
+                  'drop-shadow(0 0 30px rgba(251, 191, 36, 0.5))',
+                ]
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              gaming
+            </motion.span>
+            <motion.span 
+              className="block bg-gradient-to-r from-teal-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent"
+              style={{ 
+                textShadow: `
+                  4px 4px 0px rgba(0,0,0,0.9),
+                  -2px -2px 0px rgba(0,0,0,0.5),
+                  2px -2px 0px rgba(0,0,0,0.5),
+                  -2px 2px 0px rgba(0,0,0,0.5),
+                  2px 2px 0px rgba(0,0,0,0.5)
+                `,
+                filter: 'drop-shadow(0 0 30px rgba(20, 184, 166, 0.5))'
+              }}
+              animate={{
+                filter: [
+                  'drop-shadow(0 0 30px rgba(20, 184, 166, 0.5))',
+                  'drop-shadow(0 0 40px rgba(20, 184, 166, 0.7))',
+                  'drop-shadow(0 0 30px rgba(20, 184, 166, 0.5))',
+                ]
+              }}
+              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+            >
+              adventure
+            </motion.span>
+          </motion.h1>
+
+          <motion.p 
+            className="text-lg md:text-xl text-white font-medium mb-10 max-w-2xl mx-auto drop-shadow-lg"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            The most fun collection of games you'll find on the web.
+          </motion.p>
+
+          <motion.button
+            onClick={onEnter}
+            className="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-black text-lg font-black px-10 py-4 rounded-lg transition-all duration-200 shadow-xl inline-block relative overflow-hidden group"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(251, 191, 36, 0.6)' }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span className="relative z-10">Get started</span>
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-teal-400 to-cyan-400"
+              initial={{ x: '-100%' }}
+              whileHover={{ x: '100%' }}
+              transition={{ duration: 0.5 }}
+              style={{ opacity: 0.3 }}
+            />
+          </motion.button>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="px-6 py-8 border-t border-teal-900/50 relative z-20 bg-black/30 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-gray-500 text-sm">© 2026 PixelPop. All rights reserved.</p>
+          <div className="flex items-center gap-6">
+            <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">About</a>
+            <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">Contact</a>
+            <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">Privacy</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
