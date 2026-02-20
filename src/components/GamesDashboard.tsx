@@ -1,23 +1,31 @@
 import { Gamepad2, ArrowLeft, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
+import globedashimg from '../assets/globedash.png'; 
+import guesstopiaimg from '../assets/guesstopia.png'; 
+
+
 
 // 🎮 EDIT THIS ARRAY TO ADD/UPDATE YOUR GAMES
+export const badgecolor={
+  "Educational": "bg-gradient-to-r from-teal-500 to-cyan-500", 
+  "Action": "bg-gradient-to-r from-orange-500 to-amber-500"
+}
 export const games = [
   {
     id: 1,
     name: "GlobeDash",
-    image: "https://images.unsplash.com/photo-1587075946867-6c2a61326a97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjdXRlJTIwcGFzdGVsJTIwZ2FtaW5nJTIwc2V0dXB8ZW58MXx8fHwxNzcwMDk1NjI4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    image: globedashimg,
     link: "https://muskandhamuria.github.io/GlobeDash/",
     badge: "Educational",
-    badgeColor: "bg-gradient-to-r from-teal-500 to-cyan-500"
+    badgeColor: badgecolor["Educational"],
   },
   {
     id: 2,
     name: "GuessTopia",
-    image: "https://images.unsplash.com/photo-1599548291260-8a88e3d3b095?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyZXRybyUyMDhiaXQlMjBnYW1lJTIwc2NlbmV8ZW58MXx8fHwxNzcwMDk1ODM2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    image:guesstopiaimg,
     link: "https://muskandhamuria.github.io/GuessTopia/",
     badge: "Educational",
-    badgeColor: "bg-gradient-to-r from-orange-500 to-amber-500"
+    badgeColor: badgecolor["Educational"],
   }
 ];
 
@@ -128,11 +136,11 @@ export function GamesDashboard({ onBack }: GamesDashboardProps) {
                 
                 {/* Image */}
                 <div className="relative h-48 overflow-hidden bg-gray-800">
-                  {/* <ImageWithFallback
+                  <img
                     src={game.image}
                     alt={game.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  /> */}
+                  />
                   {/* Image overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   

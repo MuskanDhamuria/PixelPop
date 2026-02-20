@@ -1,6 +1,6 @@
 import { Gamepad2 } from 'lucide-react';
 import { motion } from 'motion/react';
-import heroImage from '../assets/1000_F_568560509_duHeTWTg9fLblBc1DLHiXvszqzTIb4WI.jpg'; 
+import heroImage from '../assets/landingpg.jpg'; 
 
 interface LandingPageProps {
   onEnter: () => void;
