@@ -92,7 +92,7 @@ export function GamesDashboard({ onBack }: GamesDashboardProps) {
                   filter: 'drop-shadow(0 0 20px rgba(20, 184, 166, 0.4))'
                 }}
               >
-                My Games
+                Games
               </h1>
               <motion.div
                 animate={{ 
@@ -191,9 +191,9 @@ export function GamesDashboard({ onBack }: GamesDashboardProps) {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-sm">© 2026 PixelPop. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">About</a>
+            {/* <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">About</a>
             <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">Contact</a>
-            <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">Privacy</a>
+            <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">Privacy</a> */}
           </div>
         </div>
       </footer>

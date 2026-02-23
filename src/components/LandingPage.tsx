@@ -85,85 +85,22 @@ export function LandingPage({ onEnter }: LandingPageProps) {
 
         {/* Content */}
         <div className="relative z-10 text-center max-w-4xl">
-          <motion.h1 
-            className="text-6xl md:text-8xl font-black mb-6 leading-tight"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
+          <motion.h1 className="text-center leading-tight">
+            {/* Welcome line */}
             <motion.span 
-              className="block text-white mb-2"
-              style={{ 
-                textShadow: `
-                  3px 3px 0px rgba(0, 0, 0, 0.8),
-                  -1px -1px 0px rgba(0,0,0,0.9),
-                  1px -1px 0px rgba(0,0,0,0.9),
-                  -1px 1px 0px rgba(0,0,0,0.9),
-                  1px 1px 0px rgba(0,0,0,0.9),
-                  0 0 20px rgba(20, 184, 166, 0.3)
-                `
-              }}
-              animate={{
-                textShadow: [
-                  '3px 3px 0px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(0,0,0,0.9), 1px -1px 0px rgba(0,0,0,0.9), -1px 1px 0px rgba(0,0,0,0.9), 1px 1px 0px rgba(0,0,0,0.9), 0 0 20px rgba(20, 184, 166, 0.3)',
-                  '3px 3px 0px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(0,0,0,0.9), 1px -1px 0px rgba(0,0,0,0.9), -1px 1px 0px rgba(0,0,0,0.9), 1px 1px 0px rgba(0,0,0,0.9), 0 0 30px rgba(20, 184, 166, 0.5)',
-                  '3px 3px 0px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(0,0,0,0.9), 1px -1px 0px rgba(0,0,0,0.9), -1px 1px 0px rgba(0,0,0,0.9), 1px 1px 0px rgba(0,0,0,0.9), 0 0 20px rgba(20, 184, 166, 0.3)',
-                ]
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
+              className="block text-4xl md:text-6xl font-medium text-white"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
             >
-              Start your
+              Welcome to PixelPop!
             </motion.span>
-            <motion.span 
-              className="block bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 bg-clip-text text-transparent"
-              style={{ 
-                textShadow: `
-                  4px 4px 0px rgba(0,0,0,0.9),
-                  -2px -2px 0px rgba(0,0,0,0.5),
-                  2px -2px 0px rgba(0,0,0,0.5),
-                  -2px 2px 0px rgba(0,0,0,0.5),
-                  2px 2px 0px rgba(0,0,0,0.5)
-                `,
-                filter: 'drop-shadow(0 0 30px rgba(251, 191, 36, 0.5))'
-              }}
-              animate={{
-                filter: [
-                  'drop-shadow(0 0 30px rgba(251, 191, 36, 0.5))',
-                  'drop-shadow(0 0 40px rgba(251, 191, 36, 0.7))',
-                  'drop-shadow(0 0 30px rgba(251, 191, 36, 0.5))',
-                ]
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              gaming
-            </motion.span>
-            <motion.span 
-              className="block bg-gradient-to-r from-teal-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent"
-              style={{ 
-                textShadow: `
-                  4px 4px 0px rgba(0,0,0,0.9),
-                  -2px -2px 0px rgba(0,0,0,0.5),
-                  2px -2px 0px rgba(0,0,0,0.5),
-                  -2px 2px 0px rgba(0,0,0,0.5),
-                  2px 2px 0px rgba(0,0,0,0.5)
-                `,
-                filter: 'drop-shadow(0 0 30px rgba(20, 184, 166, 0.5))'
-              }}
-              animate={{
-                filter: [
-                  'drop-shadow(0 0 30px rgba(20, 184, 166, 0.5))',
-                  'drop-shadow(0 0 40px rgba(20, 184, 166, 0.7))',
-                  'drop-shadow(0 0 30px rgba(20, 184, 166, 0.5))',
-                ]
-              }}
-              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-            >
-              adventure
-            </motion.span>
+
+
           </motion.h1>
 
           <motion.p 
-            className="text-lg md:text-xl text-white font-medium mb-10 max-w-2xl mx-auto drop-shadow-lg"
+            className="text-lg md:text-xl text-white font-medium mb-10 max-w-2xl mx-auto drop-shadow-lg "
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -173,11 +110,11 @@ export function LandingPage({ onEnter }: LandingPageProps) {
 
           <motion.button
             onClick={onEnter}
-            className="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-black text-lg font-black px-10 py-4 rounded-lg transition-all duration-200 shadow-xl inline-block relative overflow-hidden group"
+            className="bg-gradient-to-r from-teal-400 to-cyan-400 hover:from-teal-500 hover:to-teal-600 text-black text-lg font-black px-10 py-4 rounded-lg transition-all duration-200 shadow-xl inline-block relative overflow-hidden group"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(251, 191, 36, 0.6)' }}
+            whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(220, 210, 185, 0.6)' }}
             whileTap={{ scale: 0.95 }}
           >
             <span className="relative z-10">Get started</span>
@@ -197,9 +134,9 @@ export function LandingPage({ onEnter }: LandingPageProps) {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-sm">© 2026 PixelPop. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">About</a>
+            {/* <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">About</a>
             <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">Contact</a>
-            <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">Privacy</a>
+            <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">Privacy</a> */}
           </div>
         </div>
       </footer>
