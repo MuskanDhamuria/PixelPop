@@ -2,6 +2,8 @@ import { Gamepad2, ArrowLeft, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 import globedashimg from '../assets/globedash.png'; 
 import guesstopiaimg from '../assets/guesstopia.png'; 
+import neonstrikeimg from '../assets/neonstrike.png'; 
+
 
 
 
@@ -26,6 +28,14 @@ export const games = [
     link: "https://muskandhamuria.github.io/GuessTopia/",
     badge: "Educational",
     badgeColor: badgecolor["Educational"],
+  },
+    {
+    id: 3,
+    name: "NeonStrike",
+    image:neonstrikeimg,
+    link: "https://muskandhamuria.github.io/NeonStrike/",
+    badge: "Action",
+    badgeColor: badgecolor["Action"],
   }
 ];
 
