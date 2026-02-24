@@ -85,27 +85,28 @@ export function LandingPage({ onEnter }: LandingPageProps) {
 
         {/* Content */}
         <div className="relative z-10 text-center max-w-4xl">
-          <motion.h1 className="text-center leading-tight">
-            {/* Welcome line */}
-            <motion.span 
-              className="block text-4xl md:text-6xl font-medium text-white"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              Welcome to PixelPop!
-            </motion.span>
-
-
+          <motion.h1 
+            className="text-center mb-6"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <span className="block text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tight leading-[1.1]">
+              Level Up Your <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-cyan-400 to-blue-500">
+                Experience.
+              </span>
+            </span>
           </motion.h1>
 
           <motion.p 
-            className="text-lg md:text-xl text-white font-medium mb-10 max-w-2xl mx-auto drop-shadow-lg "
+            className="text-base sm:text-lg md:text-xl text-gray-300 mb-10 max-w-xl mx-auto leading-relaxed px-4 text-white"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            The most fun collection of games you'll find on the web.
+            Just a tiny collection of games I made in the little breaks between classes. 
+            
           </motion.p>
 
           <motion.button
