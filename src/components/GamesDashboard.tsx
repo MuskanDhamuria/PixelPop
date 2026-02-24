@@ -20,6 +20,7 @@ export const games = [
     link: "https://muskandhamuria.github.io/GlobeDash/",
     badge: "Educational",
     badgeColor: badgecolor["Educational"],
+    code: "https://github.com/MuskanDhamuria/GlobeDash"
   },
   {
     id: 2,
@@ -28,6 +29,7 @@ export const games = [
     link: "https://muskandhamuria.github.io/GuessTopia/",
     badge: "Educational",
     badgeColor: badgecolor["Educational"],
+    code: "https://github.com/MuskanDhamuria/GuessTopia"
   },
     {
     id: 3,
@@ -36,6 +38,7 @@ export const games = [
     link: "https://muskandhamuria.github.io/NeonStrike/",
     badge: "Action",
     badgeColor: badgecolor["Action"],
+    code: "https://github.com/MuskanDhamuria/NeonStrike"
   }
 ];
 
@@ -104,7 +107,7 @@ export function GamesDashboard({ onBack }: GamesDashboardProps) {
               >
                 Games
               </h1>
-              <motion.div
+              {/* <motion.div
                 animate={{ 
                   rotate: [0, 15, -15, 0],
                   scale: [1, 1.2, 1]
@@ -116,7 +119,7 @@ export function GamesDashboard({ onBack }: GamesDashboardProps) {
                 }}
               >
                 <Sparkles className="size-8 text-amber-400" />
-              </motion.div>
+              </motion.div> */}
             </div>
             <p className="text-lg text-teal-200/60">Explore and play all my creations</p>
           </motion.div>
@@ -167,15 +170,17 @@ export function GamesDashboard({ onBack }: GamesDashboardProps) {
                 </div>
 
                 {/* Content */}
-                <div className="p-5 relative z-10">
+                <div className="p-5 relative z-10 flex flex-col gap-4">
                   <h3 className="text-xl font-black text-white mb-4 group-hover:text-teal-300 transition-colors duration-200">
                     {game.name}
                   </h3>
+
+                  {/* Play Now Button */}
                   <motion.a
                     href={game.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-black font-bold text-center px-6 py-2.5 rounded transition-all duration-200 relative overflow-hidden group/button"
+                    className="bg-gradient-to-r from-teal-400 to-cyan-400 hover:from-teal-500 hover:to-cyan-600 text-black text-lg font-black px-10 py-4 rounded-lg transition-all duration-200 shadow-xl inline-block relative overflow-hidden group"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     transition={{ duration: 0.15 }}
@@ -189,6 +194,16 @@ export function GamesDashboard({ onBack }: GamesDashboardProps) {
                       style={{ opacity: 0.4 }}
                     />
                   </motion.a>
+
+                  {/* Learn More Link */}
+                  <a
+                    href={game.code}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="!underline decoration-teal-400 underline-offset-4 text-sm text-teal-300/80 hover:text-teal-400 transition-colors duration-200"
+                  >
+                    Learn More
+                  </a>
                 </div>
               </motion.div>
             ))}

@@ -1,6 +1,7 @@
 # PixelPop
 
 PixelPop is a web-based games dashboard showcasing mini-games built with **React**, **TypeScript**, **TailwindCSS**, and **Motion** for animations. Users can explore and play games directly from the dashboard with a modern, animated interface.
+Deployed application: https://muskandhamuria.github.io/PixelPop/ 
 
 ## Link to the codes of the games inside
 - GlobeDash (https://github.com/MuskanDhamuria/GlobeDash)

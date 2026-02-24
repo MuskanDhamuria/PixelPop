@@ -64,7 +64,7 @@ export function LandingPage({ onEnter }: LandingPageProps) {
               key={i}
               className="absolute w-2 h-2 rounded-full"
               style={{
-                background: i % 3 === 0 ? '#14b8a6' : i % 3 === 1 ? '#fbbf24' : '#5eead4',
+                background: i % 3 === 0 ? '#14b8a6' : i % 3 === 1 ? '#24b7fb' : '#5eead4',
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
                 filter: 'blur(1px)',
