@@ -150,7 +150,7 @@ export function GamesDashboard({ onBack }: GamesDashboardProps) {
               className="px-4 py-2 bg-gray-900 border border-teal-900/40 rounded-md text-white focus:outline-none focus:border-teal-500 transition"
             >
               {badgeOptions.map((badge) => (
-                <option key={badge} value={badge}  className="bg-gray-900 text-white">
+                <option key={badge} value={badge}  className="bg-gray-900 text-black">
                   {badge}
                 </option>
               ))}
