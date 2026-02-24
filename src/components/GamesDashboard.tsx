@@ -7,7 +7,7 @@ import neonstrikeimg from '../assets/neonstrike.png';
 
 
 
-// 🎮 EDIT THIS ARRAY TO ADD/UPDATE YOUR GAMES
+// GAME
 export const badgecolor={
   "Educational": "bg-gradient-to-r from-teal-500 to-cyan-500", 
   "Action": "bg-gradient-to-r from-orange-500 to-amber-500"
@@ -196,17 +196,6 @@ export function GamesDashboard({ onBack }: GamesDashboardProps) {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="px-6 py-8 border-t border-teal-900/30 mt-12 relative z-20 bg-black/20 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-gray-500 text-sm">© 2026 PixelPop. All rights reserved.</p>
-          <div className="flex items-center gap-6">
-            {/* <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">About</a>
-            <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">Contact</a>
-            <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">Privacy</a> */}
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
