@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import globedashimg from '../assets/globedash.png'; 
 import guesstopiaimg from '../assets/guesstopia.png'; 
 import neonstrikeimg from '../assets/neonstrike.png'; 
+import {useState} from 'react';
 
 
 
@@ -42,12 +43,20 @@ export const games = [
   }
 ];
 
+
+
 interface GamesDashboardProps {
   onBack: () => void;
 }
 
 export function GamesDashboard({ onBack }: GamesDashboardProps) {
+
+  const [selectedBadge, setSelectedBadge] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const badgeOptions = ["All", ...new Set(games.map((game) => game.badge))];
   return (
+    
     <div className="min-h-screen bg-[#0a0a0a] flex flex-col overflow-hidden relative">
       {/* Animated gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 via-transparent to-amber-500/5"></div>
@@ -99,7 +108,7 @@ export function GamesDashboard({ onBack }: GamesDashboardProps) {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <div className="flex items-center gap-3 mb-3">
+            <div className="flex items-center gap-3 mb-2">
               <h1 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-teal-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent"
                 style={{ 
                   filter: 'drop-shadow(0 0 20px rgba(20, 184, 166, 0.4))'
@@ -124,9 +133,42 @@ export function GamesDashboard({ onBack }: GamesDashboardProps) {
             <p className="text-lg text-teal-200/60">Explore and play all my creations</p>
           </motion.div>
 
+          <div className="flex flex-col md:flex-row gap-4 mb-12">
+              {/* Search Input */}
+              <input
+                type="text"
+                placeholder="  Search games..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="px-4 py-2 bg-gray-900 border border-teal-900/40 rounded-md text-white focus:outline-none focus:border-teal-500 transition"
+              />
+
+              {/* Badge Dropdown */}
+              <select
+              value={selectedBadge}
+              onChange={(e) => setSelectedBadge(e.target.value)}
+              className="px-4 py-2 bg-gray-900 border border-teal-900/40 rounded-md text-white focus:outline-none focus:border-teal-500 transition"
+            >
+              {badgeOptions.map((badge) => (
+                <option key={badge} value={badge}  className="bg-gray-900 text-white">
+                  {badge}
+                </option>
+              ))}
+            </select>
+            </div>
+
           {/* Games Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {games.map((game, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            {games
+              .filter((game)=>{
+                const matchesBadge=
+                  selectedBadge === "All" || game.badge === selectedBadge;
+                const matchesSearch =
+                  game.name.toLowerCase().includes(searchQuery.toLowerCase());
+                
+                return matchesBadge && matchesSearch;
+              })
+            .map((game, index) => (
               <motion.div
                 key={game.id}
                 className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 rounded-lg overflow-hidden border border-teal-900/40 hover:border-teal-500/60 transition-all duration-200 group relative backdrop-blur-sm"
