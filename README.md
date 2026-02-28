@@ -7,6 +7,7 @@ Deployed application: https://muskandhamuria.github.io/PixelPop/
 - GlobeDash (https://github.com/MuskanDhamuria/GlobeDash)
 - NeonStrike (https://github.com/MuskanDhamuria/NeonStrike)
 - GuessTopia (https://github.com/MuskanDhamuria/GuessTopia)
+- Flappy Frost (https://github.com/MuskanDhamuria/FlappyFrost)
 
 ## 🛠 Technologies Used
 
