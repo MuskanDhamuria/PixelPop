@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import globedashimg from '../assets/globedash.png'; 
 import guesstopiaimg from '../assets/guesstopia.png'; 
 import neonstrikeimg from '../assets/neonstrike.png'; 
+import flappyfrostimg from '../assets/flappyfrost.png'; 
 import {useState} from 'react';
 
 
@@ -11,7 +12,8 @@ import {useState} from 'react';
 // GAME
 export const badgecolor={
   "Educational": "bg-gradient-to-r from-teal-500 to-cyan-500", 
-  "Action": "bg-gradient-to-r from-orange-500 to-amber-500"
+  "Action": "bg-gradient-to-r from-orange-500 to-amber-500",
+  "Arcade": "bg-gradient-to-r from-blue-500 to-blue-800",
 }
 export const games = [
   {
@@ -40,6 +42,15 @@ export const games = [
     badge: "Action",
     badgeColor: badgecolor["Action"],
     code: "https://github.com/MuskanDhamuria/NeonStrike"
+  },
+  {
+    id: 4,
+    name: "Flappy Frost",
+    image:flappyfrostimg,
+    link: "https://muskandhamuria.github.io/FlappyFrost/",
+    badge: "Arcade",
+    badgeColor: badgecolor["Arcade"],
+    code: "https://github.com/MuskanDhamuria/FlappyFrost"
   }
 ];
 
@@ -205,7 +216,7 @@ export function GamesDashboard({ onBack }: GamesDashboardProps) {
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <span className={`${game.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg`}>
+                    <span className={`${game.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg relative z-20`}>
                       {game.badge}
                     </span>
                   </motion.div>
