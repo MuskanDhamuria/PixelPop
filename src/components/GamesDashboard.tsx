@@ -1,4 +1,4 @@
-import { Gamepad2, ArrowLeft, Sparkles } from 'lucide-react';
+import { Gamepad2, ArrowLeft, Sparkles, Send, Bot, User } from 'lucide-react';
 import { motion } from 'motion/react';
 import globedashimg from '../assets/globedash.png'; 
 import guesstopiaimg from '../assets/guesstopia.png'; 
@@ -60,11 +60,120 @@ interface GamesDashboardProps {
   onBack: () => void;
 }
 
+type ChatMessage = {
+  id: number;
+  role: 'user' | 'assistant';
+  content: string;
+};
+
 export function GamesDashboard({ onBack }: GamesDashboardProps) {
 
   const [selectedBadge, setSelectedBadge] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'games' | 'chatbot'>('games');
+  const [chatInput, setChatInput] = useState('');
+  const [isChatLoading, setIsChatLoading] = useState(false);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
+    {
+      id: 1,
+      role: 'assistant',
+      content: "Tell me what kind of game you want and I'll recommend from PixelPop.",
+    },
+  ]);
+
+  const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  const geminiModel = import.meta.env.VITE_GEMINI_MODEL ?? 'gemini-1.5-flash';
+  const quickPrompts = [
+    'I want a fast action game',
+    'Recommend educational games',
+    'What is best for quick 5-minute play?',
+  ];
+
+  const askGeminiForRecommendations = async (userPrompt: string) => {
+    const gamesContext = games
+      .map((game) => `${game.name} (${game.badge}) - Play: ${game.link}`)
+      .join('\n');
+
+    const prompt = `You are the PixelPop game recommendation assistant.
+Only recommend games from this exact list:
+${gamesContext}
+
+Rules:
+- Recommend 1 to 3 games from the list only.
+- Briefly explain each recommendation in one short line.
+- If the user asks for something unavailable, suggest the closest match from the list.
+- Keep answer concise.
+
+User request: ${userPrompt}`;
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiApiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 220,
+          },
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Gemini API error (${response.status})`);
+    }
+
+    const data = await response.json();
+    const text = data?.candidates?.[0]?.content?.parts?.map((part: { text?: string }) => part.text ?? '').join('').trim();
+
+    if (!text) {
+      throw new Error('No recommendation text returned.');
+    }
+
+    return text;
+  };
+
+  const handleSendMessage = async () => {
+    const userPrompt = chatInput.trim();
+    if (!userPrompt || isChatLoading) return;
+
+    const userMessage: ChatMessage = {
+      id: Date.now(),
+      role: 'user',
+      content: userPrompt,
+    };
+
+    setChatMessages((prev) => [...prev, userMessage]);
+    setChatInput('');
+    setIsChatLoading(true);
+
+    try {
+      if (!geminiApiKey) {
+        throw new Error('Missing VITE_GEMINI_API_KEY');
+      }
+
+      const recommendation = await askGeminiForRecommendations(userPrompt);
+      setChatMessages((prev) => [
+        ...prev,
+        { id: Date.now() + 1, role: 'assistant', content: recommendation },
+      ]);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unable to fetch recommendations.';
+      setChatMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          role: 'assistant',
+          content: `I couldn't reach Gemini right now (${message}). Add VITE_GEMINI_API_KEY and try again.`,
+        },
+      ]);
+    } finally {
+      setIsChatLoading(false);
+    }
+  };
+
   const badgeOptions = ["All", ...new Set(games.map((game) => game.badge))];
   return (
     
@@ -144,6 +253,31 @@ export function GamesDashboard({ onBack }: GamesDashboardProps) {
             <p className="text-lg text-teal-200/60">Explore and play all my creations</p>
           </motion.div>
 
+          <div className="flex items-center gap-3 mb-8">
+            <button
+              onClick={() => setActiveTab('games')}
+              className={`px-4 py-2 rounded-md font-semibold text-sm transition ${
+                activeTab === 'games'
+                  ? 'bg-gradient-to-r from-teal-400 to-cyan-500 text-black'
+                  : 'bg-gray-900 border border-teal-900/40 text-teal-200/80 hover:text-teal-200'
+              }`}
+            >
+              Games
+            </button>
+            <button
+              onClick={() => setActiveTab('chatbot')}
+              className={`px-4 py-2 rounded-md font-semibold text-sm transition ${
+                activeTab === 'chatbot'
+                  ? 'bg-gradient-to-r from-teal-400 to-cyan-500 text-black'
+                  : 'bg-gray-900 border border-teal-900/40 text-teal-200/80 hover:text-teal-200'
+              }`}
+            >
+              Chatbot
+            </button>
+          </div>
+
+          {activeTab === 'games' && (
+            <>
           <div className="flex flex-col md:flex-row gap-4 mb-12">
               {/* Search Input */}
               <input
@@ -261,9 +395,119 @@ export function GamesDashboard({ onBack }: GamesDashboardProps) {
               </motion.div>
             ))}
           </div>
+          </>
+          )}
+
+          {activeTab === 'chatbot' && (
+            <div className="w-full max-w-6xl grid lg:grid-cols-[280px_1fr] gap-4">
+              <div className="bg-gray-950/70 border border-teal-900/40 rounded-xl p-4 backdrop-blur-sm">
+                <h2 className="text-teal-300 font-bold mb-2">Chatbot</h2>
+                <p className="text-sm text-teal-100/70 mb-4">
+                  Ask for game picks by mood, genre, or session length.
+                </p>
+                <div className="space-y-2 mb-6">
+                  {quickPrompts.map((prompt) => (
+                    <button
+                      key={prompt}
+                      onClick={() => setChatInput(prompt)}
+                      className="w-full text-left px-3 py-2 rounded-md text-sm bg-gray-900/80 border border-teal-900/40 text-teal-100/90 hover:border-teal-500/60 transition"
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
+                <div className="space-y-2">
+                  <p className="text-xs uppercase tracking-wider text-teal-400/80">Available games</p>
+                  <div className="flex flex-wrap gap-2">
+                    {games.map((game) => (
+                      <span
+                        key={game.id}
+                        className="text-xs px-2 py-1 rounded-full bg-teal-900/40 border border-teal-700/40 text-teal-100/90"
+                      >
+                        {game.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="h-[560px] bg-gray-950/95 border border-teal-800/60 rounded-xl shadow-2xl shadow-teal-900/40 backdrop-blur-sm flex flex-col overflow-hidden">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-teal-900/50 bg-gradient-to-r from-teal-900/30 to-cyan-900/20">
+                  <div className="flex items-center gap-2 text-teal-200 font-semibold">
+                    <Bot className="size-4" />
+                    <span>Gemini Game Guide</span>
+                  </div>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[radial-gradient(circle_at_top,rgba(20,184,166,0.08),transparent_55%)]">
+                  {chatMessages.map((message) => (
+                    <div
+                      key={message.id}
+                      className={`flex items-start gap-2 ${message.role === 'assistant' ? 'justify-start' : 'justify-end'}`}
+                    >
+                      {message.role === 'assistant' && (
+                        <div className="mt-1 p-1.5 rounded-full bg-teal-900/50 border border-teal-700/40">
+                          <Bot className="size-3.5 text-teal-200" />
+                        </div>
+                      )}
+                      <div
+                        className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap leading-relaxed ${
+                          message.role === 'assistant'
+                            ? 'bg-teal-900/40 border border-teal-800/40 text-teal-100'
+                            : 'bg-cyan-600/80 border border-cyan-400/40 text-white'
+                        }`}
+                      >
+                        {message.content}
+                      </div>
+                      {message.role === 'user' && (
+                        <div className="mt-1 p-1.5 rounded-full bg-cyan-900/60 border border-cyan-700/50">
+                          <User className="size-3.5 text-cyan-100" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {isChatLoading && (
+                    <div className="flex items-start gap-2">
+                      <div className="mt-1 p-1.5 rounded-full bg-teal-900/50 border border-teal-700/40">
+                        <Bot className="size-3.5 text-teal-200" />
+                      </div>
+                      <div className="bg-teal-900/40 border border-teal-800/40 text-teal-100 rounded-2xl px-4 py-2.5 text-sm">
+                        Thinking...
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-3 border-t border-teal-900/50 bg-black/30">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={chatInput}
+                      onChange={(e) => setChatInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleSendMessage();
+                        }
+                      }}
+                      placeholder="Ask for game recommendations..."
+                      className="flex-1 px-3 py-2.5 bg-black/40 border border-teal-900/50 rounded-lg text-sm text-white focus:outline-none focus:border-teal-500"
+                    />
+                    <button
+                      onClick={handleSendMessage}
+                      disabled={isChatLoading}
+                      className="px-4 py-2.5 bg-gradient-to-r from-teal-400 to-cyan-500 text-black rounded-lg font-semibold disabled:opacity-50"
+                      aria-label="Send message"
+                    >
+                      <Send className="size-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
-
     </div>
   );
 }
