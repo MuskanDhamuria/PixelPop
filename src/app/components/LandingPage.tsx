@@ -36,7 +36,9 @@ export default function LandingPage({ onEnter, onLogout, isAuthenticated = false
           playsInline
           onLoadedMetadata={handleLoadedMetadata}
           className="w-full h-full object-cover scale-[1.08] origin-center"
-          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260411_104032_69319010-2458-492b-b04d-b40a5dfa4482.mp4"
+          src="
+          https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260324_024928_1efd0b0d-6c02-45a8-8847-1030900c4f63.mp4
+          "
         />
       </div>
 
@@ -75,7 +77,7 @@ export default function LandingPage({ onEnter, onLogout, isAuthenticated = false
           </button>
         ) : (
           <div className="liquid-glass rounded-full px-5 py-2.5 text-[11px] font-medium tracking-[0.12em] text-white/40 cursor-not-allowed">
-            GUEST MODE
+            GUEST 
           </div>
         )}
       </header>
@@ -98,9 +100,9 @@ export default function LandingPage({ onEnter, onLogout, isAuthenticated = false
             letterSpacing: '-0.02em',
           }}
         >
-          <div className="text-white text-shadow text-center">A small collection of games I made</div>
-          {/* <div style={{ color: 'rgba(255,255,255,0.55)' }}>
-            Dominate with pure skill.
+          {/* <div className="text-white text-shadow text-center">A small collection of games I made</div>
+          <div style={{ color: 'rgba(255,255,255,0.55)' }}>
+            Hope you like them!
           </div> */}
         </h1>
       </div>

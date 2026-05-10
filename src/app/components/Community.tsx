@@ -188,7 +188,7 @@ export default function Community({ onNavigate, onLogout }: CommunityProps) {
       </header>
 
       <main className="pt-32 px-10 pb-20">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-6 mb-4">
             <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/30">
               <Users size={40} />
