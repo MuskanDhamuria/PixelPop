@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, ArrowLeft, LogOut } from 'lucide-react';
+
+import { Send, Bot, User, ArrowLeft, LogOut, Sparkles, Gamepad2, MessageCircle, Shuffle} from 'lucide-react';
 import { fetchGames, Game } from '../data/games';
 import { apiPost } from '../utils/api';
 
@@ -19,11 +20,27 @@ interface ChatbotResponse {
   reply: string;
 }
 
+const navLinks = [
+  { name: 'GAMES', page: 'dashboard' },
+  { name: 'LEADERBOARD', page: 'leaderboard' },
+  { name: 'COMMUNITY', page: 'community' },
+  { name: 'CHATBOT', page: 'chatbot' },
+  { name: 'FRIENDS', page: 'friends' },
+  { name: 'PROFILE', page: 'profile' }
+];
+
+const quickPrompts = [
+  'Easy game',
+  'Fast game',
+  'Educational game',
+  'Best rated game'
+];
+
 export default function Chatbot({ onNavigate, onLogout }: ChatbotProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: "Hey there! I'm PixelBot, your gaming assistant. I can help you find the perfect game or answer any questions about PixelPop. What are you looking for today?",
+      text: "Hey there. I'm PixelBot. Tell me what kind of game you feel like playing and I will narrow it down.",
       sender: 'bot',
       timestamp: new Date()
     }
@@ -32,6 +49,9 @@ export default function Chatbot({ onNavigate, onLogout }: ChatbotProps) {
   const [games, setGames] = useState<Game[]>([]);
   const [isSending, setIsSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [randomGame, setRandomGame] = useState<Game | null>(null);
+  const [isSpinning, setIsSpinning] = useState(false);
+  
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -109,14 +129,14 @@ export default function Chatbot({ onNavigate, onLogout }: ChatbotProps) {
     }
 
     if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
-      return 'Hey! Tell me what kind of game you want: easy, fast, educational, arcade, or challenging.';
+      return 'Hey. Tell me what kind of game you want: easy, fast, educational, arcade, or challenging.';
     }
 
     return buildRecommendation(games, 'available games');
   };
 
-  const handleSend = async () => {
-    const trimmedInput = inputValue.trim();
+  const sendMessage = async (text: string) => {
+    const trimmedInput = text.trim();
     if (!trimmedInput || isSending) return;
 
     const userMessage: Message = {
@@ -172,6 +192,8 @@ export default function Chatbot({ onNavigate, onLogout }: ChatbotProps) {
     }
   };
 
+  const handleSend = () => sendMessage(inputValue);
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -179,100 +201,234 @@ export default function Chatbot({ onNavigate, onLogout }: ChatbotProps) {
     }
   };
 
+  const spinRandomGame = () => {
+    if (games.length === 0 || isSpinning) return;
+
+    setIsSpinning(true);
+    let spinCount = 0;
+    const spinTimer = window.setInterval(() => {
+      setRandomGame(games[Math.floor(Math.random() * games.length)]);
+      spinCount += 1;
+
+      if (spinCount >= 12) {
+        window.clearInterval(spinTimer);
+        setRandomGame(games[Math.floor(Math.random() * games.length)]);
+        setIsSpinning(false);
+      }
+    }, 90);
+  };
+
   return (
-    <div className="min-h-screen bg-black text-white" style={{ fontFamily: "'Inter', sans-serif" }}>
-      <header className="fixed top-0 left-0 right-0 z-50 px-10 py-8 flex justify-between items-center bg-black/50 backdrop-blur-md border-b border-white/10">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => onNavigate('landing')}
-            className="flex items-center gap-2 text-white/70 hover:text-white transition-colors"
-          >
-            <ArrowLeft size={16} />
-            <span className="text-sm">Back</span>
-          </button>
-          <div className="text-[17px] font-semibold tracking-tight">
-            PixelPop<sup>TM</sup>
-          </div>
-        </div>
+    <div className="min-h-screen bg-[#050608] text-white overflow-x-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_15%_12%,rgba(34,211,238,0.16),transparent_28%),radial-gradient(circle_at_85%_18%,rgba(244,114,182,0.12),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.04),transparent_36%)]" />
 
-        <nav className="liquid-glass rounded-full px-2 py-2 flex items-center gap-1">
-          {[
-            { name: 'GAMES', page: 'dashboard' },
-            { name: 'LEADERBOARD', page: 'leaderboard' },
-            { name: 'COMMUNITY', page: 'community' },
-            { name: 'FRIENDS', page: 'friends' },
-            { name: 'PROFILE', page: 'profile' }
-          ].map((link) => (
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#050608]/85 px-4 py-4 backdrop-blur-xl lg:px-10">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
+          <div className="flex min-w-0 items-center gap-4">
             <button
-              key={link.name}
-              onClick={() => onNavigate(link.page)}
-              className={`text-[11px] font-medium tracking-[0.12em] px-4 py-1.5 rounded-full transition-colors duration-200 ${
-                link.page === 'chatbot' ? 'text-white bg-white/10' : 'text-white/90 hover:text-white'
-              }`}
+              onClick={() => onNavigate('landing')}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white/70 transition-colors hover:border-white/20 hover:text-white"
+              aria-label="Back"
             >
-              {link.name}
+              <ArrowLeft size={16} />
             </button>
-          ))}
-        </nav>
+            <div className="min-w-0">
+              <div className="text-[17px] font-semibold tracking-tight">
+                PixelPop<sup>TM</sup>
+              </div>
+              <div className="text-xs text-white/45">PixelBot assistant</div>
+            </div>
+          </div>
 
-        <button
-          onClick={onLogout}
-          className="liquid-glass rounded-full px-5 py-2.5 text-[11px] font-medium tracking-[0.12em] text-white/90 hover:text-white transition-colors duration-200 flex items-center gap-2"
-        >
-          <LogOut size={14} />
-          LOGOUT
-        </button>
+          <nav className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] p-1 lg:flex">
+            {navLinks.map((link) => (
+              <button
+                key={link.name}
+                onClick={() => onNavigate(link.page)}
+                className={`rounded-full px-4 py-2 text-[11px] font-medium tracking-[0.12em] transition-colors duration-200 ${
+                  link.page === 'chatbot'
+                    ? 'bg-white text-black'
+                    : 'text-white/70 hover:bg-white/[0.08] hover:text-white'
+                }`}
+              >
+                {link.name}
+              </button>
+            ))}
+          </nav>
+
+          <button
+            onClick={onLogout}
+            className="flex h-10 items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 text-[11px] font-medium tracking-[0.12em] text-white/80 transition-colors hover:border-white/20 hover:text-white"
+          >
+            <LogOut size={14} />
+            <span className="hidden sm:inline">LOGOUT</span>
+          </button>
+        </div>
       </header>
 
-      <main className="pt-32 px-10 pb-20">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex items-center gap-6 mb-4">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/30">
-              <Bot size={40} />
+      <main className="relative z-10 mx-auto grid min-h-screen max-w-7xl gap-6 px-4 pb-8 pt-28 lg:grid-cols-[360px_minmax(0,1fr)] lg:px-10">
+        <aside className="space-y-5">
+          <section className="rounded-2xl border border-white/10 bg-white/[0.055] p-6 shadow-2xl shadow-black/40 backdrop-blur-xl">
+            <div className="mb-6 flex items-center gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-400 text-black shadow-lg shadow-cyan-500/20">
+                <Bot size={28} />
+              </div>
+              <div>
+                <h1 className="text-3xl font-semibold tracking-tight">PixelBot</h1>
+                <p className="text-sm text-white/55">AI assistant to recommend you games!</p>
+              </div>
             </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              {/* <div className="rounded-xl border border-white/10 bg-black/20 p-4">
+                <div className="flex items-center gap-2 text-white/55">
+                  <Gamepad2 size={15} />
+                  <span className="text-xs uppercase tracking-[0.14em]">Games</span>
+                </div>
+                <div className="mt-3 text-2xl font-semibold">{games.length || '-'}</div>
+              </div> */}
+              {/* <div className="rounded-xl border border-white/10 bg-black/20 p-4">
+                <div className="flex items-center gap-2 text-white/55">
+                  <MessageCircle size={15} />
+                  <span className="text-xs uppercase tracking-[0.14em]">Chats</span>
+                </div>
+                <div className="mt-3 text-2xl font-semibold">{Math.max(messages.length - 1, 0)}</div>
+              </div> */}
+            </div>
+          </section>
+
+          <section className="rounded-2xl border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl">
+            <div className="mb-4 flex items-center gap-2 text-sm font-medium text-white/75">
+              <Sparkles size={16} className="text-cyan-300" />
+              Quick picks
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {quickPrompts.map((prompt) => (
+                <button
+                  key={prompt}
+                  onClick={() => sendMessage(prompt)}
+                  disabled={isSending}
+                  className="rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm text-white/75 transition-colors hover:border-cyan-300/40 hover:bg-cyan-300/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          </section>
+
+          {/* {featuredGames.length > 0 && (
+            <section className="hidden rounded-2xl border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl lg:block">
+              <div className="mb-4 text-sm font-medium text-white/75">Top matches</div>
+              <div className="space-y-3">
+                {featuredGames.map((game) => (
+                  <button
+                    key={game.id}
+                    onClick={() => sendMessage(`Tell me about ${game.name}`)}
+                    disabled={isSending}
+                    className="flex w-full items-center gap-3 rounded-xl border border-white/10 bg-black/20 p-3 text-left transition-colors hover:border-white/20 hover:bg-white/[0.06] disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <img src={game.image} alt="" className="h-12 w-12 rounded-lg object-cover" />
+                    <div className="min-w-0">
+                      <div className="truncate text-sm font-medium text-white">{game.name}</div>
+                      <div className="mt-1 text-xs text-white/50">{game.difficulty} · {game.duration}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </section> */}
+          {/* )} */}
+
+             {games.length > 0 && (
+            <section className="hidden rounded-2xl border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl lg:block">
+                <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <div className="text-sm font-medium text-white/75">Game randomizer</div>
+                  <div className="mt-1 text-xs text-white/45">Spin when you cannot decide</div>
+                </div>
+                <button
+                  onClick={spinRandomGame}
+                  disabled={isSpinning}
+                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-300 text-black transition-colors hover:bg-cyan-200 disabled:cursor-not-allowed disabled:opacity-60"
+                  aria-label="Spin random game"
+                >
+                  <Shuffle size={18} className={isSpinning ? 'animate-spin' : ''} />
+                </button>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-black/25 p-3">
+                {randomGame ? (
+                  <div>
+                    <img
+                      src={randomGame.image}
+                      alt=""
+                      className={`h-36 w-full rounded-xl object-cover transition-opacity duration-200 ${isSpinning ? 'opacity-55' : 'opacity-100'}`}
+                    />
+                    <div className="mt-4">
+                      <div className="text-base font-semibold text-white">{randomGame.name}</div>
+                      <div className="mt-1 text-xs text-white/50">{randomGame.difficulty} · {randomGame.duration} · {randomGame.badge}</div>
+                      <p className="mt-3 line-clamp-2 text-sm leading-6 text-white/60">{randomGame.description}</p>
+                    </div>
+                    
+                  </div>
+                ) : (
+                  <button 
+                      onClick={spinRandomGame}
+                    disabled={isSpinning}
+                    className="flex min-h-52 w-full flex-col items-center justify-center rounded-xl border border-dashed border-white/15 text-center transition-colors hover:border-cyan-300/40 hover:bg-cyan-300/10 disabled:cursor-not-allowed disabled:opacity-60"
+                  ></button>
+                )} </div>
+            </section> )}
+        </aside>
+
+        <section className="flex min-h-[680px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0b0d12]/90 shadow-2xl shadow-black/50 backdrop-blur-xl">
+          <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
             <div>
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent">
-                PixelBot
-              </h1>
+              <div className="text-sm font-medium text-white">Conversation</div>
+              <div className="text-xs text-white/45">{isSending ? 'PixelBot is thinking' : 'Ready'}</div>
+            </div>
+            <div className="flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1.5 text-xs text-emerald-200">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
+              Online
             </div>
           </div>
-          <p className="text-white/60 text-xl mb-12">
-            Your AI gaming assistant - Get personalized game recommendations and answers to your questions
-          </p>
 
-          <div className="liquid-glass rounded-3xl overflow-hidden flex flex-col h-[700px] shadow-2xl">
-            <div className="flex-1 overflow-y-auto p-8 space-y-6 bg-gradient-to-b from-transparent to-white/[0.02]">
+          <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+            <div className="space-y-5">
               {messages.map((message, index) => (
                 <div
                   key={message.id}
-                  className={`flex gap-4 ${message.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
+                  className={`flex gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   style={{
-                    animation: `fadeInUp 0.4s ease-out ${index * 0.05}s both`
+                    animation: `fadeInUp 0.35s ease-out ${Math.min(index, 6) * 0.035}s both`
                   }}
                 >
-                  <div
-                    className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg ${
-                      message.sender === 'bot'
-                        ? 'bg-gradient-to-br from-cyan-500 to-blue-500 shadow-cyan-500/30'
-                        : 'bg-gradient-to-br from-purple-500 to-pink-500 shadow-purple-500/30'
-                    }`}
-                  >
-                    {message.sender === 'bot' ? <Bot size={22} /> : <User size={22} />}
-                  </div>
+                  {message.sender === 'bot' && (
+                    <div className="mt-1 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-cyan-300 text-black">
+                      <Bot size={18} />
+                    </div>
+                  )}
 
                   <div
-                    className={`max-w-[75%] rounded-3xl px-6 py-4 shadow-lg ${
+                    className={`max-w-[82%] rounded-2xl px-5 py-4 shadow-lg sm:max-w-[70%] ${
                       message.sender === 'bot'
-                        ? 'bg-gradient-to-br from-white/10 to-white/5 border border-white/10'
-                        : 'bg-gradient-to-br from-cyan-500 to-blue-500 text-white shadow-cyan-500/30'
+                        ? 'border border-white/10 bg-white/[0.06] text-white'
+                        : 'bg-white text-black'
                     }`}
                   >
-                    <p className="text-base leading-relaxed whitespace-pre-line">
-                      {message.text}
-                    </p>
+                    {message.text === 'Thinking...' ? (
+                      <div className="flex items-center gap-2 text-sm text-white/70">
+                        <span className="h-2 w-2 animate-pulse rounded-full bg-cyan-300" />
+                        <span className="h-2 w-2 animate-pulse rounded-full bg-cyan-300 [animation-delay:120ms]" />
+                        <span className="h-2 w-2 animate-pulse rounded-full bg-cyan-300 [animation-delay:240ms]" />
+                      </div>
+                    ) : (
+                      <p className="whitespace-pre-line text-[15px] leading-7">
+                        {message.text}
+                      </p>
+                    )}
                     <span
-                      className={`text-xs mt-2 block ${
-                        message.sender === 'bot' ? 'text-white/40' : 'text-white/60'
+                      className={`mt-3 block text-[11px] ${
+                        message.sender === 'bot' ? 'text-white/40' : 'text-black/45'
                       }`}
                     >
                       {message.timestamp.toLocaleTimeString([], {
@@ -281,33 +437,40 @@ export default function Chatbot({ onNavigate, onLogout }: ChatbotProps) {
                       })}
                     </span>
                   </div>
+
+                  {message.sender === 'user' && (
+                    <div className="mt-1 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-white/10 text-white">
+                      <User size={18} />
+                    </div>
+                  )}
                 </div>
               ))}
               <div ref={messagesEndRef} />
             </div>
+          </div>
 
-            <div className="border-t border-white/10 p-6 bg-gradient-to-t from-white/5 to-transparent">
-              <div className="flex gap-4">
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  disabled={isSending}
-                  placeholder="Ask me anything about games..."
-                  className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-white/40 focus:outline-none focus:border-cyan-500/50 focus:bg-white/10 transition-all duration-300 disabled:opacity-60"
-                />
-                <button
-                  onClick={handleSend}
-                  disabled={!inputValue.trim() || isSending}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-2xl px-8 py-4 font-semibold hover:from-cyan-400 hover:to-blue-400 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 disabled:shadow-none hover:scale-105 disabled:hover:scale-100"
-                >
-                  <Send size={20} />
-                </button>
-              </div>
+          <div className="border-t border-white/10 bg-black/20 p-4 sm:p-5">
+            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.055] p-2">
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyPress={handleKeyPress}
+                disabled={isSending}
+                placeholder="Ask for an easy game, a fast game, or details about a title"
+                className="min-w-0 flex-1 bg-transparent px-4 py-3 text-[15px] text-white outline-none placeholder:text-white/35 disabled:opacity-60"
+              />
+              <button
+                onClick={handleSend}
+                disabled={!inputValue.trim() || isSending}
+                className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-cyan-300 text-black transition-colors hover:bg-cyan-200 disabled:cursor-not-allowed disabled:bg-white/15 disabled:text-white/35"
+                aria-label="Send message"
+              >
+                <Send size={19} />
+              </button>
             </div>
           </div>
-        </div>
+        </section>
       </main>
     </div>
   );
