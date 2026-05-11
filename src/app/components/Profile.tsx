@@ -1,4 +1,4 @@
-import { ArrowLeft, LogOut, User, Trophy, Heart, Clock, Edit, Award, Flame } from 'lucide-react';
+import { ArrowLeft, LogOut, User, Trophy, Heart, Clock, Edit, Award } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { Achievement, fetchAchievements, getRarityColor } from '../data/achievements';
 import { fetchGames, Game } from '../data/games';
@@ -96,19 +96,19 @@ export default function Profile({ onNavigate, onLogout }: ProfileProps) {
       </header>
 
       {/* Main Content */}
-      <main className="pt-32 px-10 pb-20">
+      <main className="pt-28 px-6 md:px-10 pb-20">
         <div className="max-w-7xl mx-auto">
           {/* Profile Header */}
-          <div className="liquid-glass rounded-3xl p-10 mb-8 shadow-2xl">
-            <div className="flex items-start gap-8">
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-6 md:p-10 mb-8 shadow-2xl">
+            <div className="flex flex-col md:flex-row items-start gap-6 md:gap-8">
               {/* Avatar */}
-              <div className="w-32 h-32 rounded-3xl bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center shadow-lg shadow-cyan-500/30">
-                <User size={64} />
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center shadow-lg shadow-cyan-500/30">
+                <User size={56} />
               </div>
 
               <div className="flex-1">
-                <div className="flex items-center gap-4 mb-4">
-                  <h1 className="text-5xl font-bold">{userProfile.username}</h1>
+                <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-4">
+                  <h1 className="text-3xl md:text-5xl font-bold tracking-tight">{userProfile.username}</h1>
                   <div className="px-4 py-2 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold text-sm">
                     Level {userProfile.level}
                   </div>
@@ -120,7 +120,7 @@ export default function Profile({ onNavigate, onLogout }: ProfileProps) {
                     <span className="text-white/70">XP Progress</span>
                     <span className="text-white/70">{userProfile.xp} / {userProfile.xpToNextLevel}</span>
                   </div>
-                  <div className="h-3 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-2.5 bg-white/10 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-500"
                       style={{ width: `${progress}%` }}
@@ -134,7 +134,7 @@ export default function Profile({ onNavigate, onLogout }: ProfileProps) {
                     <textarea
                       value={bio}
                       onChange={(e) => setBio(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-cyan-500/50 resize-none"
+                      className="w-full bg-black border border-white/10 rounded-2xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-cyan-500/50 resize-none"
                       rows={3}
                     />
                     <div className="flex gap-3 mt-3">
@@ -154,7 +154,7 @@ export default function Profile({ onNavigate, onLogout }: ProfileProps) {
                   </div>
                 ) : (
                   <div className="flex items-start gap-3">
-                    <p className="text-white/70 flex-1">{userProfile.bio}</p>
+                    <p className="text-white/70 flex-1 leading-relaxed text-[15px]">{userProfile.bio}</p>
                     <button
                       onClick={() => setEditing(true)}
                       className="text-cyan-400 hover:text-cyan-300 transition-colors"
@@ -165,40 +165,33 @@ export default function Profile({ onNavigate, onLogout }: ProfileProps) {
                 )}
 
                 {/* Stats */}
-                <div className="grid grid-cols-4 gap-6 mt-8">
-                  <div className="text-center">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mt-8">
+                  <div className="text-center rounded-2xl border border-white/10 bg-white/[0.02] p-3">
                     <div className="text-3xl font-bold text-cyan-400">{userProfile.gamesPlayed}</div>
                     <div className="text-sm text-white/60">Games Played</div>
                   </div>
-                  <div className="text-center">
+                  <div className="text-center rounded-2xl border border-white/10 bg-white/[0.02] p-3">
                     <div className="text-3xl font-bold text-purple-400">{unlockedAchievements.length}</div>
                     <div className="text-sm text-white/60">Achievements</div>
                   </div>
-                  <div className="text-center">
+                  <div className="text-center rounded-2xl border border-white/10 bg-white/[0.02] p-3">
                     <div className="text-3xl font-bold text-pink-400">{userProfile.friends.length}</div>
                     <div className="text-sm text-white/60">Friends</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="flex items-center justify-center gap-2">
-                      <Flame className="text-orange-400" size={28} />
-                      <div className="text-3xl font-bold text-orange-400">{userProfile.streak}</div>
-                    </div>
-                    <div className="text-sm text-white/60">Day Streak</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
             {/* Achievements */}
             <div className="lg:col-span-2">
-              <div className="liquid-glass rounded-3xl p-8 shadow-xl mb-8">
+              <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-6 md:p-8 shadow-xl mb-8">
                 <div className="flex items-center gap-3 mb-6">
                   <Trophy className="text-yellow-400" size={32} />
                   <h2 className="text-2xl font-bold">Achievements</h2>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {achievements.map((achievement) => {
                     const unlocked = userProfile.achievements.includes(achievement.id);
                     return (
@@ -207,7 +200,7 @@ export default function Profile({ onNavigate, onLogout }: ProfileProps) {
                         className={`p-4 rounded-2xl border transition-all duration-300 ${
                           unlocked
                             ? `bg-gradient-to-br ${getRarityColor(achievement.rarity)} border-white/20 shadow-lg`
-                            : 'bg-white/5 border-white/10 opacity-50'
+                            : 'bg-black border-white/10 opacity-55'
                         }`}
                       >
                         <div className="text-3xl mb-2">{achievement.icon}</div>
@@ -220,7 +213,7 @@ export default function Profile({ onNavigate, onLogout }: ProfileProps) {
               </div>
 
               {/* Favorites */}
-              <div className="liquid-glass rounded-3xl p-8 shadow-xl">
+              <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-6 md:p-8 shadow-xl">
                 <div className="flex items-center gap-3 mb-6">
                   <Heart className="text-pink-400" size={32} />
                   <h2 className="text-2xl font-bold">Favorite Games</h2>
@@ -228,11 +221,11 @@ export default function Profile({ onNavigate, onLogout }: ProfileProps) {
                 {favoriteGames.length === 0 ? (
                   <p className="text-white/50 text-center py-8">No favorite games yet</p>
                 ) : (
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {favoriteGames.map((game) => (
                       <div
                         key={game.id}
-                        className="liquid-glass rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 cursor-pointer"
+                        className="rounded-2xl overflow-hidden border border-white/10 bg-black hover:border-white/20 transition-all duration-300 cursor-pointer"
                         onClick={() => onNavigate('dashboard')}
                       >
                         <img src={game.image} alt={game.name} className="w-full h-32 object-cover" />
@@ -279,7 +272,7 @@ export default function Profile({ onNavigate, onLogout }: ProfileProps) {
               </div> */}
 
               {/* Recently Played */}
-              <div className="liquid-glass rounded-3xl p-6 shadow-xl">
+              <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-6 shadow-xl">
                 <div className="flex items-center gap-3 mb-6">
                   <Clock className="text-blue-400" size={28} />
                   <h2 className="text-xl font-bold">Recently Played</h2>
@@ -291,7 +284,7 @@ export default function Profile({ onNavigate, onLogout }: ProfileProps) {
                     {userProfile.recentlyPlayed.slice(0, 5).map((recent, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-3 p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer"
+                        className="flex items-center gap-3 p-3 bg-black border border-white/10 rounded-xl hover:bg-white/[0.04] transition-colors cursor-pointer"
                         onClick={() => onNavigate('dashboard')}
                       >
                         <div className="flex-1">

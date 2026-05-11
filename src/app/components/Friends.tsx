@@ -249,27 +249,24 @@ export default function Friends({ onNavigate, onLogout }: FriendsProps) {
         </button>
       </header>
 
-      <main className="pt-32 px-10 pb-20">
+      <main className="pt-28 px-6 md:px-10 pb-20">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center gap-6 mb-12">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/30">
-              <Users size={40} />
-            </div>
+          <div className="flex items-center gap-6 mb-8 md:mb-10">
             <div>
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent">
                 Friends
               </h1>
-              <p className="text-white/60 text-xl mt-2">{friends.length} friends</p>
+              <p className="text-white/60 text-base md:text-xl mt-2">{friends.length} friends</p>
             </div>
           </div>
 
-          <div className="flex gap-4 mb-8">
+          <div className="flex flex-wrap gap-3 mb-8">
             <button
               onClick={() => setActiveTab('friends')}
-              className={`px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+              className={`px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
                 activeTab === 'friends'
                   ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/50'
-                  : 'liquid-glass text-white/70 hover:text-white'
+                  : 'bg-white/5 border border-white/10 text-white/70 hover:text-white hover:bg-white/10'
               }`}
             >
               <div className="flex items-center gap-2">
@@ -279,10 +276,10 @@ export default function Friends({ onNavigate, onLogout }: FriendsProps) {
             </button>
             <button
               onClick={() => setActiveTab('activity')}
-              className={`px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+              className={`px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
                 activeTab === 'activity'
                   ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/50'
-                  : 'liquid-glass text-white/70 hover:text-white'
+                  : 'bg-white/5 border border-white/10 text-white/70 hover:text-white hover:bg-white/10'
               }`}
             >
               <div className="flex items-center gap-2">
@@ -294,8 +291,8 @@ export default function Friends({ onNavigate, onLogout }: FriendsProps) {
 
           {activeTab === 'friends' && (
             <div>
-              <div className="liquid-glass rounded-3xl p-6 mb-8 shadow-xl">
-                <div className="flex gap-4">
+              <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-5 md:p-6 mb-8 shadow-xl">
+                <div className="flex flex-col md:flex-row gap-3 md:gap-4">
                   <input
                     type="text"
                     value={friendUsername}
@@ -306,12 +303,12 @@ export default function Friends({ onNavigate, onLogout }: FriendsProps) {
                       }
                     }}
                     placeholder="Enter a username to add..."
-                    className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-3 text-white placeholder-white/40 focus:outline-none focus:border-purple-500/50"
+                    className="flex-1 bg-black border border-white/10 rounded-2xl px-5 py-3 text-white placeholder-white/40 focus:outline-none focus:border-purple-500/50"
                   />
                   <button
                     onClick={handleAddFriend}
                     disabled={!friendUsername.trim() || addingFriend}
-                    className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-3 rounded-2xl font-semibold hover:from-purple-400 hover:to-pink-400 transition-all shadow-lg shadow-purple-500/30 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-2xl font-semibold hover:from-purple-400 hover:to-pink-400 transition-all shadow-lg shadow-purple-500/30 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed md:min-w-[168px]"
                   >
                     <UserPlus size={20} />
                     {addingFriend ? 'Adding...' : 'Add Friend'}
@@ -320,7 +317,7 @@ export default function Friends({ onNavigate, onLogout }: FriendsProps) {
                 {friendsError && <p className="text-red-300 text-sm mt-4">{friendsError}</p>}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {loadingFriends && (
                   <div className="liquid-glass rounded-3xl p-10 text-center text-white/60 md:col-span-2">
                     Loading friends...
@@ -329,14 +326,14 @@ export default function Friends({ onNavigate, onLogout }: FriendsProps) {
                 {friends.map((friend, index) => (
                   <div
                     key={friend.id}
-                    className="liquid-glass rounded-3xl p-6 hover:bg-white/[0.03] transition-all duration-300 shadow-xl"
+                    className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-6 hover:bg-white/[0.05] transition-all duration-300 shadow-xl"
                     style={{
                       animation: `fadeInUp 0.5s ease-out ${index * 0.1}s both`,
                     }}
                   >
                     <div className="flex items-center gap-4">
                       <div className="relative">
-                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center font-bold text-xl shadow-lg">
+                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center font-bold text-lg shadow-lg">
                           {friend.username.substring(0, 2).toUpperCase()}
                         </div>
                         <div className={`absolute -bottom-1 -right-1 w-5 h-5 ${getStatusColor(friend.status)} rounded-full border-2 border-black`} />
@@ -347,7 +344,7 @@ export default function Friends({ onNavigate, onLogout }: FriendsProps) {
 
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-xl font-bold">{friend.username}</h3>
+                          <h3 className="text-lg md:text-xl font-semibold">{friend.username}</h3>
                           {friend.hasUnreadMessages && (
                             <span className="w-2.5 h-2.5 rounded-full bg-pink-500 shadow-lg shadow-pink-500/60" />
                           )}
@@ -381,10 +378,10 @@ export default function Friends({ onNavigate, onLogout }: FriendsProps) {
               </div>
 
               {selectedFriend && (
-                <div className="liquid-glass rounded-3xl p-6 mt-8 shadow-xl">
+                <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-5 md:p-6 mt-8 shadow-xl">
                   <div className="flex items-center justify-between mb-5">
                     <div>
-                      <h2 className="text-2xl font-bold">Chat with {selectedFriend.username}</h2>
+                      <h2 className="text-xl md:text-2xl font-semibold">Chat with {selectedFriend.username}</h2>
                       <p className="text-white/50 text-sm">Messages are saved to your shared conversation.</p>
                     </div>
                     <button
@@ -399,7 +396,7 @@ export default function Friends({ onNavigate, onLogout }: FriendsProps) {
                     </button>
                   </div>
 
-                  <div className="h-80 overflow-y-auto rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
+                  <div className="h-80 overflow-y-auto rounded-2xl border border-white/10 bg-black p-4 space-y-3">
                     {loadingMessages && (
                       <div className="text-white/50 text-center py-10">Loading messages...</div>
                     )}
@@ -427,7 +424,7 @@ export default function Friends({ onNavigate, onLogout }: FriendsProps) {
                     })}
                   </div>
 
-                  <div className="flex gap-3 mt-4">
+                  <div className="flex flex-col sm:flex-row gap-3 mt-4">
                     <input
                       type="text"
                       value={messageDraft}
@@ -438,12 +435,12 @@ export default function Friends({ onNavigate, onLogout }: FriendsProps) {
                         }
                       }}
                       placeholder={`Message ${selectedFriend.username}...`}
-                      className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-white placeholder-white/40 focus:outline-none focus:border-purple-500/50"
+                      className="flex-1 bg-black border border-white/10 rounded-2xl px-5 py-3 text-white placeholder-white/40 focus:outline-none focus:border-purple-500/50"
                     />
                     <button
                       onClick={sendMessage}
                       disabled={!messageDraft.trim() || sendingMessage}
-                      className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-2xl font-semibold hover:from-purple-400 hover:to-pink-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-2xl font-semibold hover:from-purple-400 hover:to-pink-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed sm:min-w-[120px]"
                     >
                       {sendingMessage ? 'Sending...' : 'Send'}
                     </button>
@@ -463,7 +460,7 @@ export default function Friends({ onNavigate, onLogout }: FriendsProps) {
               {activity.map((item, index) => (
                 <div
                   key={item.id}
-                  className="liquid-glass rounded-3xl p-6 hover:bg-white/[0.03] transition-all duration-300 shadow-xl"
+                  className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-6 hover:bg-white/[0.05] transition-all duration-300 shadow-xl"
                   style={{
                     animation: `fadeInUp 0.5s ease-out ${index * 0.1}s both`,
                   }}

@@ -11,7 +11,6 @@ interface CommunityProps {
 interface CommunityPost {
   id: string;
   user: string;
-  avatar: string;
   timestamp: string;
   content: string;
   likes: number;
@@ -23,7 +22,6 @@ interface CommunityPost {
 interface CommunityComment {
   id: string;
   user: string;
-  avatar: string;
   timestamp: string;
   content: string;
 }
@@ -187,28 +185,25 @@ export default function Community({ onNavigate, onLogout }: CommunityProps) {
         </button>
       </header>
 
-      <main className="pt-32 px-10 pb-20">
+      <main className="pt-28 px-6 md:px-10 pb-20">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center gap-6 mb-4">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/30">
-              <Users size={40} />
-            </div>
+          <div className="flex items-center gap-6 mb-3">
             <div>
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent">
                 Community
               </h1>
             </div>
           </div>
-          <p className="text-white/60 text-xl mb-12">
+          <p className="text-white/60 text-base md:text-xl mb-8 md:mb-10 max-w-3xl">
             Connect with fellow gamers and share your achievements
           </p>
 
-          <div className="liquid-glass rounded-3xl p-8 mb-8 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-6 md:p-8 mb-8 shadow-xl transition-shadow duration-300">
             <textarea
               value={postContent}
               onChange={(event) => setPostContent(event.target.value)}
               placeholder="Share something with the community..."
-              className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-white/40 focus:outline-none focus:border-cyan-500/50 focus:bg-white/10 resize-none transition-all duration-300"
+              className="w-full bg-black border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-white/40 focus:outline-none focus:border-cyan-500/50 focus:bg-black resize-none transition-all duration-300"
               rows={4}
             />
             <div className="flex justify-end mt-4">
@@ -220,7 +215,7 @@ export default function Community({ onNavigate, onLogout }: CommunityProps) {
               <button
                 onClick={handleCreatePost}
                 disabled={!postContent.trim() || posting}
-                className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-sm font-semibold rounded-xl px-8 py-3 hover:from-cyan-400 hover:to-blue-400 transition-all duration-300 shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-sm font-semibold rounded-xl px-8 py-3 hover:from-cyan-400 hover:to-blue-400 transition-all duration-300 shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {posting ? 'Posting...' : 'Post'}
               </button>
@@ -238,7 +233,7 @@ export default function Community({ onNavigate, onLogout }: CommunityProps) {
               return (
               <div
                 key={post.id}
-                className="liquid-glass rounded-3xl p-8 hover:bg-white/[0.03] hover:shadow-xl transition-all duration-300"
+                className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-6 md:p-7 hover:bg-white/[0.05] hover:shadow-xl transition-all duration-300"
                 style={{
                   animation: `fadeInUp 0.5s ease-out ${index * 0.1}s both`,
                 }}
@@ -252,15 +247,15 @@ export default function Community({ onNavigate, onLogout }: CommunityProps) {
                       'bg-gradient-to-br from-green-500 to-emerald-600'
                     }`}
                   >
-                    {post.avatar}
+                    {post.user.substring(0, 2).toUpperCase()}
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="font-bold text-lg">{post.user}</span>
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="font-semibold text-lg">{post.user}</span>
                       <span className="text-white/30 text-sm">&middot;</span>
                       <span className="text-white/50 text-sm">{formatTimestamp(post.timestamp)}</span>
                     </div>
-                    <p className="text-white/90 text-base leading-relaxed mb-5">{post.content}</p>
+                    <p className="text-white/90 text-[15px] leading-relaxed mb-5">{post.content}</p>
                     <div className="flex gap-8">
                       <button
                         onClick={() => handleLikePost(post.id)}
@@ -291,9 +286,9 @@ export default function Community({ onNavigate, onLogout }: CommunityProps) {
                           <div key={comment.id} className="rounded-2xl bg-white/5 border border-white/10 p-4">
                             <div className="flex items-center gap-3 mb-2">
                               <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center text-xs font-bold">
-                                {comment.avatar}
+                                {comment.user.substring(0, 2).toUpperCase()}
                               </div>
-                              <span className="font-semibold text-sm">{comment.user}</span>
+                              <span className="font-medium text-sm">{comment.user}</span>
                               <span className="text-white/30 text-xs">&middot;</span>
                               <span className="text-white/50 text-xs">{formatTimestamp(comment.timestamp)}</span>
                             </div>
@@ -303,7 +298,7 @@ export default function Community({ onNavigate, onLogout }: CommunityProps) {
                       </div>
                     )}
 
-                    <div className="mt-5 flex gap-3">
+                    <div className="mt-5 flex flex-col sm:flex-row gap-3">
                       <input
                         type="text"
                         value={commentDrafts[post.id] ?? ''}
@@ -311,12 +306,12 @@ export default function Community({ onNavigate, onLogout }: CommunityProps) {
                           setCommentDrafts((drafts) => ({ ...drafts, [post.id]: event.target.value }))
                         }
                         placeholder="Write a comment..."
-                        className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-cyan-500/50"
+                        className="flex-1 bg-black border border-white/10 rounded-2xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-cyan-500/50"
                       />
                       <button
                         onClick={() => handleCreateComment(post.id)}
                         disabled={!commentDrafts[post.id]?.trim() || commentingPostId === post.id}
-                        className="bg-white/10 text-white text-sm font-semibold rounded-2xl px-5 py-3 hover:bg-white/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="bg-white/10 text-white text-sm font-semibold rounded-2xl px-5 py-3 hover:bg-white/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed sm:min-w-[120px]"
                       >
                         {commentingPostId === post.id ? 'Adding...' : 'Comment'}
                       </button>

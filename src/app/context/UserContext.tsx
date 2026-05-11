@@ -128,8 +128,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
     const currentProfile = userProfileRef.current;
     if (currentProfile) {
-      const today = new Date().toDateString();
-      const yesterday = new Date(Date.now() - 86400000).toDateString();
       const newRecent = {
         gameId,
         gameName,
@@ -140,8 +138,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       const nextGamesPlayed = currentProfile.gamesPlayed + 1;
       const updatedRecent = [newRecent, ...currentProfile.recentlyPlayed.filter(g => g.gameId !== gameId)].slice(0, 10);
       let newXP = currentProfile.xp + 50;
-      let newStreak = currentProfile.streak;
-      let lastPlayDate = currentProfile.lastPlayDate;
       const achievements = [...currentProfile.achievements];
 
       const awardAchievement = (achievementId: string) => {
@@ -150,11 +146,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
           newXP += 100;
         }
       };
-
-      if (currentProfile.lastPlayDate !== today) {
-        newStreak = currentProfile.lastPlayDate === yesterday ? currentProfile.streak + 1 : 1;
-        lastPlayDate = today;
-      }
 
       if (nextGamesPlayed >= 1) awardAchievement('first_game');
       if (nextGamesPlayed >= 10) awardAchievement('games_10');
@@ -173,8 +164,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         xp: newXP,
         level: newLevel,
         xpToNextLevel: xpForNextLevel(newLevel),
-        streak: newStreak,
-        lastPlayDate,
         achievements
       });
     }
@@ -196,28 +185,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   const updateStreak = async () => {
-    const currentProfile = userProfileRef.current;
-    if (currentProfile) {
-      const today = new Date().toDateString();
-      const yesterday = new Date(Date.now() - 86400000).toDateString();
-
-      if (currentProfile.lastPlayDate === today) {
-        return; // Already played today
-      }
-
-      let newStreak = currentProfile.streak;
-      if (currentProfile.lastPlayDate === yesterday) {
-        newStreak += 1;
-      } else if (currentProfile.lastPlayDate !== today) {
-        newStreak = 1;
-      }
-
-      await saveProfile({
-        ...currentProfile,
-        streak: newStreak,
-        lastPlayDate: today
-      });
-    }
+    return;
   };
 
   return (

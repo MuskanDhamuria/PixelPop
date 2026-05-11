@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-import { Send, Bot, User, ArrowLeft, LogOut, Sparkles, Gamepad2, MessageCircle, Shuffle} from 'lucide-react';
+import { Send, Bot, User, ArrowLeft, LogOut, Shuffle} from 'lucide-react';
 import { fetchGames, Game } from '../data/games';
 import { apiPost } from '../utils/api';
 
@@ -219,60 +219,51 @@ export default function Chatbot({ onNavigate, onLogout }: ChatbotProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#050608] text-white overflow-x-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
-      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_15%_12%,rgba(34,211,238,0.16),transparent_28%),radial-gradient(circle_at_85%_18%,rgba(244,114,182,0.12),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.04),transparent_36%)]" />
+    <div className="min-h-screen bg-black text-white overflow-x-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
 
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#050608]/85 px-4 py-4 backdrop-blur-xl lg:px-10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-          <div className="flex min-w-0 items-center gap-4">
-            <button
-              onClick={() => onNavigate('landing')}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white/70 transition-colors hover:border-white/20 hover:text-white"
-              aria-label="Back"
-            >
-              <ArrowLeft size={16} />
-            </button>
-            <div className="min-w-0">
-              <div className="text-[17px] font-semibold tracking-tight">
-                PixelPop<sup>TM</sup>
-              </div>
-              <div className="text-xs text-white/45">PixelBot assistant</div>
-            </div>
-          </div>
-
-          <nav className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] p-1 lg:flex">
-            {navLinks.map((link) => (
-              <button
-                key={link.name}
-                onClick={() => onNavigate(link.page)}
-                className={`rounded-full px-4 py-2 text-[11px] font-medium tracking-[0.12em] transition-colors duration-200 ${
-                  link.page === 'chatbot'
-                    ? 'bg-white text-black'
-                    : 'text-white/70 hover:bg-white/[0.08] hover:text-white'
-                }`}
-              >
-                {link.name}
-              </button>
-            ))}
-          </nav>
-
+      <header className="fixed top-0 left-0 right-0 z-50 px-10 py-8 flex justify-between items-center bg-black/50 backdrop-blur-md border-b border-white/10">
+        <div className="flex items-center gap-4">
           <button
-            onClick={onLogout}
-            className="flex h-10 items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 text-[11px] font-medium tracking-[0.12em] text-white/80 transition-colors hover:border-white/20 hover:text-white"
+            onClick={() => onNavigate('landing')}
+            className="flex items-center gap-2 text-white/70 hover:text-white transition-colors"
+            aria-label="Back"
           >
-            <LogOut size={14} />
-            <span className="hidden sm:inline">LOGOUT</span>
+            <ArrowLeft size={16} />
+            <span className="text-sm">Back</span>
           </button>
+          <div className="text-[17px] font-semibold tracking-tight">
+            PixelPop<sup>TM</sup>
+          </div>
         </div>
+
+        <nav className="liquid-glass rounded-full px-2 py-2 flex items-center gap-1">
+          {navLinks.map((link) => (
+            <button
+              key={link.name}
+              onClick={() => onNavigate(link.page)}
+              className={`text-[11px] font-medium tracking-[0.12em] px-4 py-1.5 rounded-full transition-colors duration-200 ${
+                link.page === 'chatbot' ? 'text-white bg-white/10' : 'text-white/90 hover:text-white'
+              }`}
+            >
+              {link.name}
+            </button>
+          ))}
+        </nav>
+
+        <button
+          onClick={onLogout}
+          className="liquid-glass rounded-full px-5 py-2.5 text-[11px] font-medium tracking-[0.12em] text-white/90 hover:text-white transition-colors duration-200 flex items-center gap-2"
+        >
+          <LogOut size={14} />
+          LOGOUT
+        </button>
       </header>
 
       <main className="relative z-10 mx-auto grid min-h-screen max-w-7xl gap-6 px-4 pb-8 pt-28 lg:grid-cols-[360px_minmax(0,1fr)] lg:px-10">
         <aside className="space-y-5">
           <section className="rounded-2xl border border-white/10 bg-white/[0.055] p-6 shadow-2xl shadow-black/40 backdrop-blur-xl">
             <div className="mb-6 flex items-center gap-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-400 text-black shadow-lg shadow-cyan-500/20">
-                <Bot size={28} />
-              </div>
+              
               <div>
                 <h1 className="text-3xl font-semibold tracking-tight">PixelBot</h1>
                 <p className="text-sm text-white/55">AI assistant to recommend you games!</p>
@@ -299,7 +290,6 @@ export default function Chatbot({ onNavigate, onLogout }: ChatbotProps) {
 
           <section className="rounded-2xl border border-white/10 bg-white/[0.045] p-5 backdrop-blur-xl">
             <div className="mb-4 flex items-center gap-2 text-sm font-medium text-white/75">
-              <Sparkles size={16} className="text-cyan-300" />
               Quick picks
             </div>
             <div className="flex flex-wrap gap-2">

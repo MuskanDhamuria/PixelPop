@@ -42,23 +42,21 @@ export default function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center px-4 bg-gradient-to-br from-black via-black to-purple-950/20" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="min-h-screen bg-black text-white flex items-center justify-center px-4" style={{ fontFamily: "'Inter', sans-serif" }}>
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="text-center mb-10" style={{ animation: 'fadeInUp 0.6s ease-out' }}>
-          <h1 className="text-5xl font-bold mb-3 bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
+        <div className="text-center mb-8" style={{ animation: 'fadeInUp 0.6s ease-out' }}>
+          <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-tight bg-gradient-to-r from-purple-300 via-pink-300 to-white bg-clip-text text-transparent">
             PixelPop<sup className="text-2xl">TM</sup>
           </h1>
-          <p className="text-white/60 text-lg">Create your gaming account</p>
+          <p className="text-white/60 text-base text-center mx-auto">Create your account to start playing</p>
         </div>
 
         {/* Signup Form */}
-        <div className="liquid-glass rounded-3xl p-10 shadow-2xl" style={{ animation: 'fadeInUp 0.6s ease-out 0.2s both' }}>
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
-              <UserPlus size={28} />
-            </div>
-            <h2 className="text-3xl font-bold">Join PixelPop</h2>
+        <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-7 md:p-9 shadow-2xl" style={{ animation: 'fadeInUp 0.6s ease-out 0.2s both' }}>
+          <div className="flex items-center gap-3 mb-7">
+            
+            <h2 className="text-2xl font-semibold tracking-tight">Join PixelPop</h2>
           </div>
 
           {error && (
@@ -69,7 +67,7 @@ export default function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-semibold mb-3 text-white/80">Username</label>
+              <label className="block text-xs font-semibold mb-2 text-white/75 uppercase tracking-[0.14em]">Username</label>
               <div className="relative">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={20} />
                 <input
@@ -77,14 +75,14 @@ export default function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-white placeholder-white/40 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all duration-300"
+                  className="w-full bg-black border border-white/10 rounded-2xl pl-12 pr-4 py-3.5 text-white placeholder-white/40 focus:outline-none focus:border-purple-500/60 focus:bg-black transition-all duration-300 [&:-webkit-autofill]:shadow-[inset_0_0_0px_1000px_rgb(0,0,0)] [&:-webkit-autofill]:[-webkit-text-fill-color:white]"
                   placeholder="Choose a username"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold mb-3 text-white/80">Email</label>
+              <label className="block text-xs font-semibold mb-2 text-white/75 uppercase tracking-[0.14em]">Email</label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={20} />
                 <input
@@ -92,14 +90,14 @@ export default function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-white placeholder-white/40 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all duration-300"
+                  className="w-full bg-black border border-white/10 rounded-2xl pl-12 pr-4 py-3.5 text-white placeholder-white/40 focus:outline-none focus:border-purple-500/60 focus:bg-black transition-all duration-300 [&:-webkit-autofill]:shadow-[inset_0_0_0px_1000px_rgb(0,0,0)] [&:-webkit-autofill]:[-webkit-text-fill-color:white]"
                   placeholder="Enter your email"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold mb-3 text-white/80">Password</label>
+              <label className="block text-xs font-semibold mb-2 text-white/75 uppercase tracking-[0.14em]">Password</label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={20} />
                 <input
@@ -108,7 +106,7 @@ export default function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={6}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-white placeholder-white/40 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all duration-300"
+                  className="w-full bg-black border border-white/10 rounded-2xl pl-12 pr-4 py-3.5 text-white placeholder-white/40 focus:outline-none focus:border-purple-500/60 focus:bg-black transition-all duration-300 [&:-webkit-autofill]:shadow-[inset_0_0_0px_1000px_rgb(0,0,0)] [&:-webkit-autofill]:[-webkit-text-fill-color:white]"
                   placeholder="Create a password (min 6 characters)"
                 />
               </div>
@@ -117,7 +115,7 @@ export default function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-base font-semibold rounded-2xl px-4 py-4 hover:from-purple-400 hover:to-pink-400 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-8 shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-105 disabled:hover:scale-100"
+              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold rounded-2xl px-4 py-3.5 hover:from-purple-400 hover:to-pink-400 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-7 shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50"
             >
               {loading ? 'Creating account...' : 'Create Account'}
             </button>
@@ -128,7 +126,7 @@ export default function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
               Already have an account?{' '}
               <button
                 onClick={onSwitchToLogin}
-                className="text-cyan-400 hover:text-cyan-300 font-medium"
+                className="text-purple-300 hover:text-purple-500 font-medium"
               >
                 Sign in
               </button>
