@@ -1,0 +1,52 @@
+name: Ping Supabase to Prevent Pausing
+
+on:
+  schedule:
+    - cron: "0 9 * * 1,4" # 9:00 AM UTC every Monday and Thursday
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Supabase client
+        run: npm install @supabase/supabase-js --no-fund --no-audit
+
+      - name: Ping Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.NEXT_SERVICE_ROLE_KEY }}
+          SUPABASE_PING_TABLE: ${{ vars.SUPABASE_PING_TABLE }}
+        run: |
+          node -e "
+          (async () => {
+            try {
+              const { createClient } = require('@supabase/supabase-js');
+              const url = process.env.SUPABASE_URL;
+              const key = process.env.SUPABASE_KEY;
+              const table = process.env.SUPABASE_PING_TABLE || 'songs';
+
+              if (!url || !key) {
+                throw new Error('Missing SUPABASE_URL or SUPABASE_KEY secret');
+              }
+
+              const supabase = createClient(url, key);
+              const { error } = await supabase.from(table).select('*', { count: 'exact', head: true }).limit(1);
+
+              if (error) throw error;
+              console.log('Supabase ping successful on table:', table);
+            } catch (err) {
+              console.error('Error pinging Supabase:', err.message);
+              process.exit(1);
+            }
+          })();
+          "
