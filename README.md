@@ -4,7 +4,7 @@ PixelPop is a React + Vite web app for gamers to connect, compete, and explore c
 https://muskandhamuria.github.io/PixelPop/ 
 
 ## Features
-- Authentication flow with login/signup
+- Single Google OAuth authentication flow (Supabase)
 - Dashboard experience for signed-in users
 - Leaderboard view
 - Community section

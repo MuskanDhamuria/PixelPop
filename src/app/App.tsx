@@ -5,18 +5,15 @@ import Leaderboard from './components/Leaderboard';
 import Community from './components/Community';
 import Chatbot from './components/Chatbot';
 import Login from './components/Login';
-import Signup from './components/Signup';
 import Profile from './components/Profile';
 import Friends from './components/Friends';
 import { auth } from './utils/auth';
 import { UserProvider } from './context/UserContext';
 
 type Page = 'landing' | 'dashboard' | 'leaderboard' | 'community' | 'chatbot' | 'profile' | 'friends';
-type AuthPage = 'login' | 'signup';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('landing');
-  const [authPage, setAuthPage] = useState<AuthPage>('login');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -56,12 +53,6 @@ export default function App() {
     setCurrentPage('dashboard');
   };
 
-  const handleSignup = () => {
-    setIsAuthenticated(true);
-    setShowAuth(false);
-    setCurrentPage('dashboard');
-  };
-
   const handleLogout = async () => {
     await auth.signOut();
     setIsAuthenticated(false);
@@ -79,10 +70,7 @@ export default function App() {
 
   // Show auth pages when user tries to access protected content
   if (showAuth && !isAuthenticated) {
-    if (authPage === 'login') {
-      return <Login onLogin={handleLogin} onSwitchToSignup={() => setAuthPage('signup')} />;
-    }
-    return <Signup onSignup={handleSignup} onSwitchToLogin={() => setAuthPage('login')} />;
+    return <Login onLogin={handleLogin} />;
   }
 
   if (currentPage === 'landing') {

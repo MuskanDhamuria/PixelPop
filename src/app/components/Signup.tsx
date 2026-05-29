@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { UserPlus, Mail, Lock, User } from 'lucide-react';
 import { auth } from '../utils/auth';
 
 interface SignupProps {
@@ -8,34 +7,19 @@ interface SignupProps {
 }
 
 export default function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleGoogleSignup = async () => {
     setError('');
     setLoading(true);
 
     try {
-      const result = await auth.signUp(email, password, username);
-
-      // Check if email confirmation is required
-      if (result.session) {
-        // User is automatically signed in
-        onSignup();
-      } else if (result.user && !result.session) {
-        // Email confirmation required
-        setError('Please check your email to confirm your account before signing in.');
-        setLoading(false);
-      } else {
-        onSignup();
-      }
+      await auth.signInWithGoogle();
+      onSignup();
     } catch (err: any) {
       console.error('Signup error details:', err);
-      setError(err.message || 'Failed to create account');
+      setError(err.message || 'Failed to sign up with Google');
     } finally {
       setLoading(false);
     }
@@ -65,61 +49,16 @@ export default function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-xs font-semibold mb-2 text-white/75 uppercase tracking-[0.14em]">Username</label>
-              <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={20} />
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                  className="w-full bg-black border border-white/10 rounded-2xl pl-12 pr-4 py-3.5 text-white placeholder-white/40 focus:outline-none focus:border-purple-500/60 focus:bg-black transition-all duration-300 [&:-webkit-autofill]:shadow-[inset_0_0_0px_1000px_rgb(0,0,0)] [&:-webkit-autofill]:[-webkit-text-fill-color:white]"
-                  placeholder="Choose a username"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold mb-2 text-white/75 uppercase tracking-[0.14em]">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={20} />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full bg-black border border-white/10 rounded-2xl pl-12 pr-4 py-3.5 text-white placeholder-white/40 focus:outline-none focus:border-purple-500/60 focus:bg-black transition-all duration-300 [&:-webkit-autofill]:shadow-[inset_0_0_0px_1000px_rgb(0,0,0)] [&:-webkit-autofill]:[-webkit-text-fill-color:white]"
-                  placeholder="Enter your email"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold mb-2 text-white/75 uppercase tracking-[0.14em]">Password</label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" size={20} />
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  minLength={6}
-                  className="w-full bg-black border border-white/10 rounded-2xl pl-12 pr-4 py-3.5 text-white placeholder-white/40 focus:outline-none focus:border-purple-500/60 focus:bg-black transition-all duration-300 [&:-webkit-autofill]:shadow-[inset_0_0_0px_1000px_rgb(0,0,0)] [&:-webkit-autofill]:[-webkit-text-fill-color:white]"
-                  placeholder="Create a password (min 6 characters)"
-                />
-              </div>
-            </div>
-
+          <div className="space-y-6">
             <button
-              type="submit"
+              type="button"
+              onClick={handleGoogleSignup}
               disabled={loading}
               className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold rounded-2xl px-4 py-3.5 hover:from-purple-400 hover:to-pink-400 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-7 shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50"
             >
-              {loading ? 'Creating account...' : 'Create Account'}
+              {loading ? 'Redirecting...' : 'Continue with Google'}
             </button>
-          </form>
+          </div>
 
           <div className="mt-6 text-center">
             <p className="text-white/60 text-sm">

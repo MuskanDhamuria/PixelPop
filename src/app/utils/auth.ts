@@ -7,6 +7,27 @@ const supabaseUrl = `https://${projectId}.supabase.co`;
 const supabase = createClient(supabaseUrl, publicAnonKey);
 
 export const auth = {
+  async signInWithGoogle() {
+    try {
+      const redirectTo = `${window.location.origin}${window.location.pathname}`;
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo,
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Google sign in error:', error);
+      throw error;
+    }
+  },
+
   async signUp(email: string, password: string, username: string) {
     try {
       // Use Supabase's built-in signup
