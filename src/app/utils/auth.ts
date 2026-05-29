@@ -9,7 +9,7 @@ const supabase = createClient(supabaseUrl, publicAnonKey);
 export const auth = {
   async signInWithGoogle() {
     try {
-      const redirectTo = `${window.location.origin}${window.location.pathname}`;
+      const redirectTo = new URL(import.meta.env.BASE_URL, window.location.origin).toString();
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
